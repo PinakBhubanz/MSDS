@@ -1,0 +1,15 @@
+{
+  "profile": "Example athlete",
+  "asOf": "2026-08-08T23:59:00-07:00",
+  "source": "demo",
+  "metrics": {
+    "sleep": { "label": "Sleep", "value": 6.2, "unit": "h", "sevenDay": 6.1, "ninetyDay": 6.3, "goal": [7.5, 8.5], "higherIsBetter": true, "coverageDays": 84 },
+    "hrv": { "label": "HRV", "value": 42.6, "unit": "ms", "sevenDay": 40.1, "ninetyDay": 38.9, "goal": [39, 55], "higherIsBetter": true, "coverageDays": 89 },
+    "restingHr": { "label": "Resting HR", "value": 68, "unit": "bpm", "sevenDay": 69.2, "ninetyDay": 71.4, "goal": [55, 68], "higherIsBetter": false, "coverageDays": 87 },
+    "vo2max": { "label": "VO₂ max", "value": 34.2, "unit": "ml/kg/min", "sevenDay": 34.1, "ninetyDay": 33.4, "goal": [42, 50], "higherIsBetter": true, "coverageDays": 18 },
+    "steps": { "label": "Steps", "value": 9140, "unit": "/day", "sevenDay": 7860, "ninetyDay": 7420, "goal": [8000, 11000], "higherIsBetter": true, "coverageDays": 92 },
+    "exercise": { "label": "Exercise", "value": 41, "unit": "min", "sevenDay": 34, "ninetyDay": 29, "goal": [30, 60], "higherIsBetter": true, "coverageDays": 81 },
+    "spo2Low": { "label": "SpO₂ low", "value": 94, "unit": "%", "sevenDay": 93.8, "ninetyDay": 94.4, "goal": [95, 100], "higherIsBetter": true, "coverageDays": 76 }
+  }
+}
+
