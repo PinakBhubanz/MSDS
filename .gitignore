@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.next/
+.wrangler/
+.vinext/
+.env
+.env.*
+!.env.example
+data/private/
+data/imports/
+analytics/.venv/
+analytics/__pycache__/
+*.pyc
+*.log
