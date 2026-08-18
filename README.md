@@ -1,46 +1,27 @@
 # JARVIS Health
 
-JARVIS Health is a personal-health control room with two connected layers:
+JARVIS Health is Pinak Bhuban's personal health/performance system. The repository now contains two complementary layers:
 
-1. **Production ChatGPT automations** that generate the daily JARVIS AM and PM health/performance emails from connected Health/Apple Health and Gmail data.
-2. **Dashboard + analytics tooling** that turns wellness signals into KPI context, constraint-first planning, and transparent 30/90/180-day scenarios.
-
-The current production automation definitions are versioned under [`automations/`](automations/README.md).
+1. **Production ChatGPT automations** — the current JARVIS AM and JARVIS PM newsletter definitions, plus the PM delivery guard.
+2. **Analytics/dashboard code** — the local JARVIS health dashboard and Python snapshot pipeline used for quantitative analysis and experimentation.
 
 ## Production automations
 
-- `automations/jarvis-am.md` — daily morning health/performance intelligence email.
-- `automations/jarvis-pm.md` — nightly closeout with evidence-backed wins and ranked changes for tomorrow.
-- `automations/jarvis-pm-delivery-guard.md` — post-midnight fail-safe that checks Gmail and recovers a missed PM delivery.
+The current automation definitions live under [`automations/`](automations/):
 
-The live schedules execute in ChatGPT. GitHub is the version-controlled reference for the prompt contract, analytical logic, supporting code, and change history.
+- `jarvis-am.md` — morning health/performance newsletter specification.
+- `jarvis-pm.md` — nightly newsletter specification, including the required `TODAY'S WINS // WHAT CHANGES TOMORROW` closeout.
+- `jarvis-pm-delivery-guard.md` — fail-safe that checks for a missed PM delivery and sends it only when absent.
 
-The canonical visual template is the Gmail message with subject:
+These files document the current production behavior. The actual schedules execute as ChatGPT scheduled tasks and use connected Health/Apple Health data plus Gmail at runtime.
 
-`JARVIS PM // SENSOR FUSION + SPC FORMAT V2 PREVIEW — Aug 10, 2026`
+**Do not commit private health exports, Gmail content, credentials, or personalized snapshots to this public repository.**
 
-## Dashboard and analytics
+## Analytics dashboard
 
-The browser dashboard ships with fictional demo data and can import a personal snapshot without sending that file to a server. Raw health records should never be committed to this repository.
+The dashboard remains a browser-local quantitative health control room. It provides KPI context, scenario analysis, uncertainty simulation, driver attribution, and local JSON import without sending imported data to a server.
 
-### Included
-
-- KPI signal stack for sleep, HRV, resting heart rate, VO2 max, steps, exercise, and low SpO2
-- Rolling 7-day vs 90-day context and explicit performance ranges
-- Downside, current-pattern, optimized, and custom scenario books
-- Seeded 1,200-path uncertainty simulation for 30-, 90-, and 180-day outcomes
-- Driver attribution, model-risk notes, data-coverage ledger, and daily protocol
-- Local JSON import and scenario export
-- Python pipeline for converting daily CSV exports into the dashboard snapshot contract
-- Optional TensorFlow challenger gated by sample size and time-series backtesting
-
-## Privacy model
-
-The public application starts in demo mode. A selected JSON file is parsed in browser memory and is not transmitted or persisted. Private source data belongs in `data/private/` or `data/imports/`, which are excluded by `.gitignore`.
-
-Do not commit medical reports, Apple Health XML/CSV exports, credentials, personal Gmail content, or personalized snapshots to this repository.
-
-## Run the dashboard
+### Run locally
 
 ```powershell
 npm install
@@ -49,9 +30,9 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-## Build a personal snapshot
+### Build a personal snapshot
 
-Prepare a daily CSV with this header:
+Prepare a local CSV using:
 
 ```text
 date,sleep_hours,hrv_ms,resting_hr_bpm,vo2max,steps,exercise_minutes,spo2_low
@@ -63,11 +44,11 @@ Then run:
 python analytics/jarvis_pipeline.py data/private/health_daily.csv --output data/private/jarvis-snapshot.json
 ```
 
-Import the resulting JSON from the dashboard. The pipeline validates dates, values, duplicate rows, metric coverage, rolling windows, and simple forecast baselines.
+The pipeline validates dates, values, duplicate rows, metric coverage, rolling windows, and simple forecast baselines.
 
-## TensorFlow model gate
+## TensorFlow challenger
 
-TensorFlow is a challenger, not a marketing label. It is disabled by default and is only evaluated with at least 180 daily observations. It must beat persistence on a chronological holdout before the pipeline marks it eligible.
+TensorFlow is optional and must earn its place. It is evaluated only with at least 180 daily observations and must beat persistence on a chronological holdout before being marked eligible.
 
 ```powershell
 python -m venv analytics/.venv
@@ -75,11 +56,12 @@ analytics/.venv/Scripts/pip install -r analytics/requirements-ml.txt
 analytics/.venv/Scripts/python analytics/jarvis_pipeline.py data/private/health_daily.csv --output data/private/jarvis-snapshot.json --enable-tensorflow
 ```
 
-The model card is written into the output snapshot. The web simulator remains intentionally transparent because scenario sliders describe assumptions, not identified causal effects.
+## Repository hygiene
 
-## Repository cleanup policy
-
-The old standalone `examples/d1` notes/database demo has been removed because it was unrelated to the active JARVIS application. Core dashboard, analytics, testing, deployment, privacy, and data-contract files are intentionally retained.
+- `data/private/` and `data/imports/` are ignored.
+- Raw Apple Health exports, lab reports, medical records, tokens, and personalized snapshots must remain outside source control.
+- Starter/demo API examples that are not part of the JARVIS product are intentionally excluded.
+- Optional hosting/database scaffolding is retained only where it remains coupled to the deployment/tooling configuration.
 
 ## Medical boundary
 
